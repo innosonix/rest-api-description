@@ -1,0 +1,4717 @@
+openapi: 3.0.0
+servers:
+  - url: '/rest-api'
+  - url: 'http://{ip}/rest-api'
+    variables:
+      ip:
+        description: Amplifier IP
+        default: '10.77.150.199'
+info:
+  description: MAXX Rest-API, default APIKey f4005bf8507999192162d989d5a60823  
+  version: 1.0.0
+  title: MAXX Rest-API
+  contact:
+    name: Innosonix
+    url: 'http://innosonix.de'
+    email: info@innosonix.de
+
+
+################################################################################################################
+paths:
+################################################################################################################
+  
+  ########################################################
+  /version:
+  ########################################################
+    get:
+      tags:
+        - version
+      summary: get Rest-API Version
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+  
+  ########################################################
+  /info/device:
+  ########################################################
+    get:
+      tags:
+        - deviceinfo
+      summary: get device infos
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceInfos'
+
+#######################################################
+#######################################################
+# SETTINGS CALLS
+#######################################################
+#######################################################
+
+  ########################################################
+  /settings:
+  ########################################################    
+    get:
+      tags:
+        - settings
+      summary: Provides the complete settings object, including all sub objects like channel / device ...
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
+
+  ########################################################
+  /settings/save:
+  ########################################################
+    put:
+      tags:
+        - settings
+      summary: Trigger settings save manually
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+            text/html:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/channel:
+  ########################################################    
+    get:
+      tags:
+        - settings/channel
+      summary: Provides all channel objects
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsChannels'
+    put:
+      tags:
+        - settings/channel
+      summary: Set 1-n channel setting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsChannels'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel
+      summary: Get max channel_id
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  channel_id:
+                    description: format [MIN, MAX, STEP, UNIT]
+                    type: array
+                    items: {}
+                example:
+                  channel_id: [1, 32, 1, ""]              
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}:
+  ########################################################    
+    get:
+      tags:
+        - settings/channel
+      summary: Provides the complete channel object, including all sub objects like name / dsp / speaker / ...
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsChannel'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/channel
+      summary: Set channel setting
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsChannel'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/channel/{channel_id}/ampenable:
+  ########################################################    
+    get:
+      tags:
+        - settings/channel/{channel_id}/ampenable
+      summary: Get ampenable of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/ampenable
+      summary: Set ampenable of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/channel/{channel_id}/bridgeenable:
+  ########################################################    
+    get:
+      tags:
+        - settings/channel/{channel_id}/bridgeenable
+      summary: Get bridging enable of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/bridgeenable
+      summary: Set channel bridging enable of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/channel/{channel_id}/name:
+  ########################################################    
+    get:
+      tags:
+        - settings/channel/{channel_id}/name
+      summary: Get the name of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/String'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/name
+      summary: Set the name of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: string
+                  pattern: '^[a-zA-Z0-9 äöü:_()!%+*#-]*$'
+                  maxLength: 256
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/name
+      summary: Get max length of channel name
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  length: 
+                    type: integer
+                example:
+                  length: 32
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp:
+  ########################################################    
+    get:
+      tags:
+       - settings/channel/{channel_id}/dsp
+      summary: Provides the complete DSP object, including all sub objects like mute / delay / eq / ...
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsChannelDsp'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+ 
+  ########################################################
+  /settings/channel/{channel_id}/dsp/currentlimiter:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get currentlimiter settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsCurrentlimiter'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Set currentlimiter settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsCurrentlimiter'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get possible currentlimiter parameters
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsCurrentlimiterOption'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/delay:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get delay setting of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsDelay'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Set delay settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsDelay'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get possible delay parameter
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsDelayOptions'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/eq:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get all eqs of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsEQs'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Set 1-n eqs of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsEQs'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get possible eq parameter
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsEQOptions'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/eq/{eq_id}:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get single eq of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+        - $ref: '#/components/parameters/eq_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsEQ'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/fir:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get fir settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsFIR'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Set fir settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsFIR'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get possible fir parameter
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsFIROptions'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/groupmute:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get resulting groupmute state of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/mute:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get mute state of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Set mute state of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/patch:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get all patches of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatches'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Set 1-n patches of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsPatches'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get possible patch parameter
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatchOption'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/patch/{patch_id}:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get single patch of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+        - $ref: '#/components/parameters/patch_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPatch'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/phase:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get the phase state of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Set the phase state of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/powerlimiter:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get powerlimiter settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPowerlimiter'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Set powerlimiter settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsPowerlimiter'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get possible powerlimiter parameter
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsPowerlimiterOptions'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/voltagelimiter:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get all voltagelimiter of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsVoltagelimiters'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Set 1-n voltagelimiter of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsVoltagelimiters'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get possible voltagelimiter parameter
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsVoltagelimiterOptions'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/voltagelimiter/{voltagelimiter_id}:
+  ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get voltagelimiter of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+        - $ref: '#/components/parameters/voltagelimiter_id'
+              
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsVoltagelimiter'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/dsp/volume:
+  ########################################################    
+    get:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get volume of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Volume'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Set volume of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Volume'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get possible volume parameter
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberOptions'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+   
+  ########################################################
+  /settings/channel/{channel_id}/speaker:
+  ########################################################    
+    get:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: Get speaker settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsSpeaker'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: Set speaker settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsSpeaker'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: Get possible speaker settings parameter
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsSpeakerOptions'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+   
+  ########################################################
+  /settings/device:
+  ########################################################    
+    get:
+      tags:
+        - settings/device
+      summary: Get complete device settings
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsDevice'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/device
+      summary: Set device settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsDevice'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+  
+  ########################################################
+  /settings/device/dsp:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/dsp
+      summary: Get complete device dsp settings
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsDeviceDsp'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/device/dsp
+      summary: Set device dsp settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsDeviceDsp'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/device/dsp/mute:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/dsp
+      summary: Get device main mute
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/device/dsp
+      summary: Set device main mute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/device/dsp/startupmute:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/dsp
+      summary: Get device startupmute
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/device/dsp
+      summary: Set device startupmute (sets settings/device/dsp/mute on startup)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/device/dsp/volume:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/dsp
+      summary: Get device main volume
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Volume'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/device/dsp
+      summary: Set device main volume
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Volume'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+    
+    options:
+      tags:
+        - settings/device/dsp
+      summary: Get possible main volume paramter
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberOptions'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/device/dsp/volumeramp:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/dsp
+      summary: Get device volumeramp settings (ramp will be executed after setting /settings/device/dsp/mute to false)
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsVolumeramp'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/device/dsp
+      summary: Set device volumeramp settings (ramp will be executed after setting /settings/device/dsp/mute to false)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsVolumeramp'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+    options:
+      tags:
+        - settings/device/dsp
+      summary: Get possible main volume paramter
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  time: 
+                    description: format [MIN, MAX, STEP, UNIT]
+                    type: array
+                    items: {}
+                example:
+                  time: [0.0, 20.0, 0.1, "s"]
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/device/fan:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/fan
+      summary: Get fan mode
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsFan'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/device/fan
+      summary: Set device main mute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsFan'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/device/grouping:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/grouping
+      summary: Provides all grouping settings
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGrouping'
+    put:
+      tags:
+        - settings/device/grouping
+      summary: Set all grouping settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsGrouping'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/device/grouping/soloautoclear:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/grouping
+      summary: get grouping soloautoclear
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+    put:
+      tags:
+        - settings/device/grouping
+      summary: set grouping soloautoclear
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/device/grouping/groups:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/grouping
+      summary: Provides all device groups
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsGroups'
+    put:
+      tags:
+        - settings/device/grouping
+      summary: Set 1-n device group setting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsGroups'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/device/grouping
+      summary: Get max group_id
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  channel_id:
+                    description: format [MIN, MAX, STEP, UNIT]
+                    type: array
+                    items: {}
+                example:
+                  channel_id: [1, 32, 1, ""]
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/device/grouping/groups/{group_id}:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/grouping
+      summary: Get complete group object
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsChannel'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    
+  ########################################################
+  /settings/device/grouping/groups/{group_id}/assign:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/grouping
+      summary: Provides all device group assigns
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsAssigns'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/device/grouping
+      summary: Set 1-n device group assigns
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsAssigns'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/device/grouping
+      summary: Get max assign_id
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  channel_id:
+                    description: format [MIN, MAX, STEP, UNIT]
+                    type: array
+                    items: {}
+                example:
+                  channel_id: [1, 32, 1, ""]
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/device/grouping/groups/{group_id}/assign/{assign_id}:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/grouping
+      summary: Provides all device group assigns
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+        - $ref: '#/components/parameters/assign_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsAssign'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/device/grouping/groups/{group_id}/enable:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/grouping
+      summary: Get group enable
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/device/grouping
+      summary: Set group enable to consider group at mute and solo
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/device/grouping/groups/{group_id}/solo:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/grouping
+      summary: Get group solo enable
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/device/grouping
+      summary: Set group solo enable
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  ########################################################
+  /settings/device/grouping/groups/{group_id}/mute:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/grouping
+      summary: Get group mute enable
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/device/grouping
+      summary: Set group mute enable
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/device/grouping/groups/{group_id}/name:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/grouping
+      summary: Get group name
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/String'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/device/grouping
+      summary: Set group name
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/String'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/device/grouping
+      summary: Get max length of group name
+      parameters:
+        - $ref: '#/components/parameters/group_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  length: 
+                    type: integer
+                example:
+                  length: 32
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  #######################################################
+  /settings/device/location:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/location
+      summary: Get device location
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/String'
+    put:
+      tags:
+        - settings/device/location
+      summary: Set device location
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/String'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/device/location
+      summary: Get max device location string length
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  length: 
+                    type: integer
+                example:
+                  length: 256
+
+  #######################################################
+  /settings/device/mainsvoltage:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/mainsvoltage
+      summary: Get mains voltage (only MA32D and MA32LP)
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Integer'
+    put:
+      tags:
+        - settings/device/mainsvoltage
+      summary: Set mains voltage (only MA32D and MA32LP)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Integer'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/device/mainsvoltage
+      summary: Get possible mains voltage paramter
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegerOptions'
+  
+  #######################################################
+  /settings/device/name:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/name
+      summary: Get device name
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/String'
+    put:
+      tags:
+        - settings/device/name
+      summary: Set device name
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/String'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/device/name
+      summary: Get max device name string length
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  length: 
+                    type: integer
+                example:
+                  length: 32
+
+  #######################################################
+  /settings/device/network:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/network
+      summary: Get device network settings
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsNetwork'
+    put:
+      tags:
+        - settings/device/network
+      summary: Set device network settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsNetwork'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/device/network
+      summary: Get max dvice name length
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsNetworkOptions'
+
+  #######################################################
+  /settings/device/remotemute:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/remotemute
+      summary: Get device remotemute settings
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsRemotemute'
+    put:
+      tags:
+        - settings/device/remotemute
+      summary: Set device remotemute settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsRemotemute'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/device/syslog:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/syslog
+      summary: Get device syslog server setting
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsSyslog'
+    put:
+      tags:
+        - settings/device/syslog
+      summary: Set device syslog server setting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsSyslog'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/device/time:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/time
+      summary: Get device time settings
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsTime'
+    put:
+      tags:
+        - settings/device/time
+      summary: Get device time settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsTime'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/device/time/timezone:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/time
+      summary: Get device timezone
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsTimezone'
+    put:
+      tags:
+        - settings/device/time
+      summary: Get device timezone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsTimezone'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/device/time/current:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/time
+      summary: Get device current time
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsTimeCurrent'
+    put:
+      tags:
+        - settings/device/time
+      summary: Set device current time
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsTimeCurrent'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/device/identify:
+  ########################################################    
+    get:
+      tags:
+        - settings/device/identify
+      summary: Get device identify flag
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean'
+    put:
+      tags:
+        - settings/device/identify
+      summary: Set device identify flag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boolean'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/interface:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get all interface settings
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsInterface'
+    put:
+      tags:
+        - settings/interface
+      summary: Set all device settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsInterface'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/interface/sync:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get device audio sync setting
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsAudioSyncGet'
+    put:
+      tags:
+        - settings/interface
+      summary: Set device audio sync
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsAudioSync'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/interface
+      summary: Get available device audio sync interfaces
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsAudioSyncOptions'
+
+  #######################################################
+  /settings/interface/output:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get selected device audio output preset
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsOutputPreset'
+    put:
+      tags:
+        - settings/interface
+      summary: Set device audio output preset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsOutputPreset'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/interface
+      summary: Get available output presets with description and available output interfaces
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsOutputOptions'
+
+  #######################################################
+  /settings/interface/madithrough:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get selected madithourgh option
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsMadithrough'
+    put:
+      tags:
+        - settings/interface
+      summary: Set madithourgh option
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsMadithrough'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/interface
+      summary: Get available Madithrough options
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsMadithroughOptions'
+
+#######################################################
+#######################################################
+# STATUS CALLS
+#######################################################
+#######################################################
+
+  ########################################################
+  /status:
+  ########################################################    
+    get:
+      tags:
+        - status
+      summary: Provides the complete status object, including all sub objects like channel / device ...
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+
+  ########################################################
+  /status/channel:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Provides all channel status objects
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusChannels'
+    options:
+      tags:
+        - status/channel
+      summary: Get max channel_id
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  channel_id:
+                    description: format [MIN, MAX, STEP, UNIT]
+                    type: array
+                    items: {}
+                example:
+                  channel_id: [1, 32, 1, ""]              
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /status/channel/{channel_id}:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Provides the complete channel status object, including all sub objects like error / level ...
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusChannel' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /status/channel/{channel_id}/active:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Provides act active state of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boolean' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    
+  ########################################################
+  /status/channel/{channel_id}/amp:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Provides act channel amp state
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusAmp' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    options:
+      tags:
+        - status/channel
+      summary: Get max channel_id
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusAmpOptions' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+  
+  ########################################################
+  /status/channel/{channel_id}/current:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Get meassured current level
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                description: to get current, get scale from option call and calc Math.pow(10, LEVEL * scale)
+                $ref: '#/components/schemas/StatusCurrentPowerVoltageLevel' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    options:
+      tags:
+        - status/channel
+      summary: Get possible current level
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusCurrentPowerVoltageLevelOptions'     
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+  
+  ########################################################
+  /status/channel/{channel_id}/error:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Provides channel error state
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusError' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /status/channel/{channel_id}/level:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Get channel level
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusLevel' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    options:
+      tags:
+        - status/channel
+      summary: Get possible level values
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusLevelOptions'     
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+   
+  ########################################################
+  /status/channel/{channel_id}/power:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Get meassured power level
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                description: to get power, get scale from option call and calc Math.pow(10, LEVEL * scale)
+                $ref: '#/components/schemas/StatusCurrentPowerVoltageLevel' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    options:
+      tags:
+        - status/channel
+      summary: Get possible power level
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusCurrentPowerVoltageLevelOptions'     
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /status/channel/{channel_id}/reduction:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Get channel reductions
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusReduction' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    options:
+      tags:
+        - status/channel
+      summary: Get possible reduction values
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusReductionOptions'     
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+  
+  ########################################################
+  /status/channel/{channel_id}/speaker:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Get channel speaker state
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusSpeaker' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    options:
+      tags:
+        - status/channel
+      summary: Get possible speaker values
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusSpeakerOptions'     
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /status/channel/{channel_id}/voltage:
+  ########################################################    
+    get:
+      tags:
+        - status/channel
+      summary: Get meassured voltage level
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                description: to get voltage, get scale from option call and calc Math.pow(10, LEVEL * scale)
+                $ref: '#/components/schemas/StatusCurrentPowerVoltageLevel' 
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    options:
+      tags:
+        - status/channel
+      summary: Get possible voltage level
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusCurrentPowerVoltageLevelOptions'     
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+
+  ########################################################
+  /status/device:
+  ########################################################    
+    get:
+      tags:
+        - status/device
+      summary: Provides all device status objects
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDevice'
+
+  ########################################################
+  /status/device/error:
+  ########################################################    
+    get:
+      tags:
+        - status/device
+      summary: Provides all device errors
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusError'
+
+  ########################################################
+  /status/device/fan:
+  ########################################################    
+    get:
+      tags:
+        - status/device
+      summary: Get device fan states
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusFan'
+    options:
+      tags:
+        - status/device
+      summary: Get possible fan values
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusFanOptions'   
+
+  ########################################################
+  /status/device/fpga:
+  ########################################################    
+    get:
+      tags:
+        - status/device
+      summary: Get device fpga states
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusFPGA'
+
+  ########################################################
+  /status/device/psu:
+  ########################################################    
+    get:
+      tags:
+        - status/device
+      summary: Get device psu states
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusPSU'
+    options:
+      tags:
+        - status/device
+      summary: Get possible psu values
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusPSUOptions'
+
+  ########################################################
+  /status/device/remotemute:
+  ########################################################    
+    get:
+      tags:
+        - status/device
+      summary: Get device remotemute states
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusRemotemute'
+
+  ########################################################
+  /status/interface:
+  ########################################################    
+    get:
+      tags:
+        - status/interface
+      summary: Get device interfaces states
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusInterface'
+  
+  ########################################################
+  /status/interface/internal:
+  ########################################################    
+    get:
+      tags:
+        - status/interface
+      summary: Get internal syncinterface states
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusInterfaceInternal'
+
+  ########################################################
+  /status/interface/interfaces:
+  ########################################################    
+    get:
+      tags:
+        - status/interface
+      summary: Get interfaces states
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusInterfaceInterfaces'
+    options:
+      tags:
+        - status/interface
+      summary: Get possible interface ids
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusInterfaceInterfacesOptions'
+
+  ########################################################
+  /status/save:
+  ########################################################    
+    get:
+      tags:
+        - status/save
+      summary: Get save state
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusSave'
+
+  ########################################################
+  /status/syslog:
+  ########################################################    
+    get:
+      tags:
+        - status/syslog
+      summary: Get save state, send lines parameter to limit returning lines
+      parameters:
+        - in: query
+          name: lines
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusSyslog'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    delete:
+      tags:
+        - status/syslog
+      summary: clear syslog
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                example:
+                  success: deleting syslog
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /status/system:
+  ########################################################
+    get:
+      tags:
+        - status/system
+      summary: Get system is ready to use
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ready:
+                    type: boolean
+
+#######################################################
+#######################################################
+# PRESET CALLS
+#######################################################
+#######################################################
+  
+  ########################################################
+  /preset/storage:
+  ########################################################    
+    options:
+      tags:
+        - preset/storage
+      summary: Get available presets
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PresetStorageOption'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+
+  ########################################################
+  /preset/storage/{preset_name}:
+  ########################################################    
+    get:
+      tags:
+        - preset/storage
+      summary: Get preset data
+      parameters:
+        - $ref: '#/components/parameters/preset_name'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - preset/storage
+      summary: Set preset data
+      parameters:
+        - $ref: '#/components/parameters/preset_name'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Settings'
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                example:
+                  success: preset saved
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '403':
+          $ref: '#/components/responses/Forbidden403'
+    delete:
+      tags:
+        - preset/storage
+      summary: delete preset
+      parameters:
+        - $ref: '#/components/parameters/preset_name'
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                example:
+                  success: preset removed
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '403':
+          $ref: '#/components/responses/Forbidden403'
+    
+  ########################################################
+  /preset/recall/{preset_name}:
+  ########################################################    
+    put:
+      tags:
+        - preset/recall
+      summary: Set preset data
+      parameters:
+        - $ref: '#/components/parameters/preset_name'
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                example:
+                  success: preset saved
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '403':
+          $ref: '#/components/responses/Forbidden403'
+  
+################################################################################################################
+components:
+################################################################################################################
+  ########################################################
+  responses:
+  ########################################################
+    UnauthorizedError401:
+      description: Request Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ##########################
+    BadRequest400:
+      description: Request Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/html:
+          schema:
+            type: string
+
+    ##########################
+    Forbidden403:
+      description: Forbidden Webserver Error
+      content:
+        text/html:
+          schema:
+            type: string
+
+
+  ########################################################
+  schemas:
+  ########################################################
+  
+  ##########################
+  ##########################
+  # Standard Schemas
+  ##########################
+  ##########################
+
+    ##########################
+    Boolean:
+    ##########################
+      type: object
+      properties:
+        value:
+          description: Actual Boolean Value of this property
+          type: boolean
+      example:
+        value: true
+
+    ##########################
+    String:
+    ##########################    
+      type: object
+      properties:
+        value:
+          description: Actual String of this property
+          type: string
+      example:
+        value: "left"
+
+    ##########################
+    Volume:
+    ##########################  
+      type: object
+      properties:
+        value:
+          description: Actual Float Value of this property
+          type: number
+          minimum: -72.0
+          maximum: 24.0
+      example:
+        value: -1.3
+
+    ##########################
+    Number:
+    ##########################  
+      type: object
+      properties:
+        value:
+          description: Actual Float Value of this property
+          type: number
+      example:
+        value: "-1.3"
+
+    NumberOptions:
+      type: object
+      properties:
+        threshold: 
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        value: [0.1, 50.0, 0.1, "unit"]
+
+    ##########################
+    Integer:
+    ##########################  
+      type: object
+      properties:
+        value:
+          description: Actual Integer Value of this property
+          type: integer
+      example:
+        value: "4512"
+    
+    IntegerOptions:
+      type: object
+      properties:
+        value: 
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        value: [1, 50, 1, "unit"]
+      
+    ##########################
+    NetworkIp:
+    ##########################
+      type: string
+      example: 10.77.150.199
+    
+    ##########################
+    NetworkMask:
+    ##########################
+      type: string
+      example: 255.255.0.0
+
+    ##########################
+    DeviceInfos:
+    ##########################
+      type: object
+      properties:
+        model_name:
+          type: string 
+          enum: [MA32D, MA32LP, MA32D2, MA32LP2, MA32HP2, MA24D2, MA24LP2, MA24HP2, MA16D2, MA16LP2, MA16HP2, ]
+        channel:
+          type: integer
+          minimum: 16
+          maximum: 32
+        options:
+          type: array
+          items:
+            type: string
+            enum: [IF1, IF2, IF3, D1, D2, M1]
+        psu_fan:
+          type: boolean
+        housing_fan:
+          type: boolean
+        sd_card:
+          type: boolean
+        rtc:
+          type: boolean
+        mains_measure:
+          type: boolean
+        sw_revision:
+          type: string
+        fpga_revision:
+          type: string
+        loader_revision:
+          type: string
+        image_id:
+          type: integer
+        serial:
+          type: string
+      example:
+        model_name: "MA32LP2"
+        channel: 32
+        options: [
+          D1,
+          D2,
+          IF1,
+          M1,
+          IF3
+        ]
+        psu_fan: false
+        housing_fan: true
+        sd_card: true
+        rtc: true
+        mains_measure: true
+        sw_revision: "3.5.5"
+        fpga_revision: "1.2.2-c9c1e032-#6312"
+        loader_revision: "1.0.2"
+        image_id: 3
+        serial: "02IGOMSP"
+
+  ##########################
+  ##########################
+  # Settings Schemas
+  ##########################
+  ##########################
+    
+    ##########################
+    Settings:
+    ##########################
+      type: object
+      properties:
+        channel:
+          $ref: '#/components/schemas/SettingsChannels'
+        device:
+          $ref: '#/components/schemas/SettingsDevice'
+
+
+    ##########################
+    SettingsAssign:
+    ##########################
+      type: object
+      properties:
+        assign_id: 
+          type: integer
+        value: 
+          type: boolean
+
+    SettingsAssigns:
+      type: array
+      items:
+        $ref: '#/components/schemas/SettingsAssign'
+
+    ##########################
+    SettingsAudioSync:
+    ##########################
+      type: object
+      properties:
+        id:
+          type: integer
+      example:
+        id: 3
+
+    SettingsAudioSyncGet:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      example:
+        id: 3
+        name: DANTE
+
+    SettingsAudioSyncOptions:
+      type: object
+      properties:
+        sync:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+      example:
+        sync: [
+          {
+            id: 0,
+            name: MADI FIBRE
+          },
+          {
+            id: 1,
+            name: MADI COAX 1
+          },
+          {
+            id: 3,
+            name: DANTE
+          }
+        ]
+
+    ##########################
+    SettingsChannel:
+    ##########################
+      type: object
+      properties: 
+        name:
+          $ref: '#/components/schemas/String'
+        ampenable:
+          $ref: '#/components/schemas/Boolean'
+        bridgeenable:
+          $ref: '#/components/schemas/Boolean'
+        dsp:
+          $ref: '#/components/schemas/SettingsChannelDsp'
+        speaker:
+          $ref: '#/components/schemas/SettingsSpeaker'      
+
+    SettingsChannels:
+      type: array
+      items: 
+        $ref: '#/components/schemas/SettingsChannel'
+    
+    ##########################
+    SettingsChannelDsp:
+    ##########################
+      type: object
+      properties:
+        currentlimiter:
+          $ref: '#/components/schemas/SettingsCurrentlimiter'
+        delay:
+          $ref: '#/components/schemas/SettingsDelay'
+        eq: 
+          $ref: '#/components/schemas/SettingsEQs'
+        fir:
+          $ref: '#/components/schemas/SettingsFIR'
+        groupmute:
+          $ref: '#/components/schemas/Boolean'
+        mute:
+          $ref: '#/components/schemas/Boolean'
+        patch:
+          $ref: '#/components/schemas/SettingsPatches'
+        phase:
+          $ref: '#/components/schemas/Boolean'
+        powerlimiter:
+          $ref: '#/components/schemas/SettingsPowerlimiter'
+        voltagelimiter:
+          $ref: '#/components/schemas/SettingsVoltagelimiters'
+        volume:
+          $ref: '#/components/schemas/Number'
+
+    ##########################
+    SettingsCurrentlimiter:
+    ##########################
+      type: object
+      properties:
+        threshold:
+          description: Limiter threshold in [Ap]
+          type: number
+          minimum: 0.1
+          maximum: 30.0
+      example:
+        threshold: 5.0
+
+    SettingsCurrentlimiterOption:
+      type: object
+      properties:
+        threshold: 
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        threshold: [0.1, 50.0, 0.1, "Ap"]
+
+    ##########################
+    SettingsDelay:
+    ##########################
+      type: object
+      properties:
+        type:
+          description: delay type
+          type: string
+          enum: ["m", "ms", "samples"]
+        value: 
+          type: number
+          minimum: 0
+          maximum: 330
+        temperature:
+          description: temperature to calc m/ms to sample
+          type: number
+          minimum: -100.0
+          maximum: 100.0
+      example:
+        type: "m"
+        value: 200.0
+        temperature: 21.5
+    
+    SettingsDelayOptions:
+      type: object
+      properties:
+        type:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        value:
+          type: object
+          properties:
+            sample:
+              description: format [MIN, MAX, STEP, UNIT]
+              type: array
+              items: {}
+            ms:
+              description: format [MIN, MAX, STEP, UNIT]
+              type: array
+              items: {}
+            m:
+              description: format [MIN, MAX, STEP, UNIT]
+              type: array
+              items: {}
+        temperature:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        temperature: [-100.0, 100.0, 0.1, "°C"]
+        type: ['sample','ms','m']  
+        value:
+          sample: [0.0, 48000.0, 1.0, "sample"]
+          ms: [0.0, 1000.0, 0.1, "ms"]
+          m: [0.0, 330.0, 0.1, "m"]
+
+    ##########################
+    SettingsDevice:
+    ##########################
+      type: object
+      properties:
+        dsp:
+          $ref: '#/components/schemas/SettingsDeviceDsp'
+        fan:
+          $ref: '#/components/schemas/SettingsFan'
+        grouping:
+          $ref: '#/components/schemas/SettingsGrouping'
+        mainsvoltage:
+          $ref: '#/components/schemas/Integer'
+        name:
+          $ref: '#/components/schemas/String'
+        network:
+          $ref: '#/components/schemas/SettingsNetwork'
+        remotemute:
+          $ref: '#/components/schemas/SettingsRemotemute'
+        syslog:
+          $ref: '#/components/schemas/SettingsSyslog'
+        time: 
+          $ref: '#/components/schemas/SettingsTime'
+
+    ##########################
+    SettingsDeviceDsp:
+    ##########################
+      type: object
+      properties:
+        mute:
+          $ref: '#/components/schemas/Boolean'
+        startupmute:
+          $ref: '#/components/schemas/Boolean'
+        volume:
+          $ref: '#/components/schemas/Number'
+        volumeramp:
+          $ref: '#/components/schemas/SettingsVolumeramp'
+        voltagereference:
+          $ref: '#/components/schemas/Number'
+
+    ##########################
+    SettingsEQ:
+    ##########################
+      type: object
+      required:
+        - eq_id
+      properties:
+        eq_id:
+          type: integer
+          minimum: 1
+          maximum: 32
+        enable:
+          type: boolean
+        type:
+          type: string
+          enum: [PEAK, NOTCH, HIGH SHELF, LOW SHELF,LP 6dB,LP 12dB BES,LP 12dB BW,LP 12dB LW-R,LP 18dB BES,LP 18dB BW,LP 24dB BES,LP 24dB BW,LP 24dB LW-R,LP 48dB BES,LP 48dB BW,LP 48dB LW-R,LP VAR Q,HP 6dB,HP 12dB BES,HP 12dB BW,HP 12dB LW-R,HP 18dB BES,HP 18dB BW,HP 24dB BES,HP 24dB BW,HP 24dB LW-R,HP 48dB BES,HP 48dB BW,HP 48dB LW-R,HP VAR Q]
+        frequency:
+          type: integer
+          minimum: 20
+          maximum: 20000
+        gain:
+          type: number
+          minimum: -12.0
+          maximum: 12.0
+        quality:
+          type: number
+          minimum: 0.1
+          maximum: 10.0
+        usedby:
+          type: integer 
+      example:
+        eq_id: 1
+        enable: true
+        type: "PEAK"
+        frequency: 100
+        gain: -1.2
+        quality: 4.5
+        usedby: 1
+
+    SettingsEQs:
+      type: array
+      items: 
+        $ref: '#/components/schemas/SettingsEQ'
+
+    SettingsEQOptions:
+      type: object
+      properties:
+        eq_id:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        type:
+          type: array
+          items:
+            type: object
+            properties:
+              description:   
+                type: string
+              value: 
+                type: string
+              hasGain:  
+                type: boolean
+              hasFrequency:   
+                type: boolean
+              hasQuality:   
+                type: boolean
+              biquads:   
+                type: integer
+        gain:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        frequency:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        quality: 
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        eq_id: [1, 32, 1, ""]
+        type: [
+          {
+            description: peak,
+            value: PEAK,
+            hasGain: true,
+            hasFrequency: true,
+            hasQuality: true,
+            biquads: 1
+          }
+        ]
+        gain: [-100.0, 24.0, 0.1, "dBFS"]
+        frequency: [20, 20000, 1, "Hz"]
+        quality: [0.1, 10.0, 0.1, ""]
+    
+    ##########################
+    SettingsFan:
+    ##########################   
+      type: object
+      properties:
+        mode:
+          type: integer
+      example:
+        mode: 1
+
+    ##########################
+    SettingsFIR:
+    ##########################
+      type: object
+      properties:
+        enable:
+          type: boolean
+        coefficients:
+          type: array
+          items: 
+            type: number
+            minimum: -131072
+            maximum: 131071
+        length:
+          type: integer
+          minimum: 0
+          maximum: 2048
+        name:
+          type: string
+          maxLength: 256
+        scaling_factor:
+          type: integer
+          minimum: 0
+          maximum: 32768
+      example:
+        enable: true
+        coefficients: [2,123,0,1,2]
+        length: 5
+        name: "myFIR"
+        scaling_factor: 32768
+
+    SettingsFIROptions:
+      type: object
+      properties:
+        length: 
+          type: integer
+        scaling_factor: 
+          type: integer
+        min: 
+          type: integer
+        max: 
+          type: integer
+        name: 
+          type: integer
+      example:
+        length: 2048
+        scaling_factor: 32768
+        min: -131072
+        max: 131071
+        name: 32
+
+    ##########################
+    SettingsGrouping:
+    ##########################
+      type: object
+      properties:
+        soloautoclear:
+          $ref: '#/components/schemas/Boolean'
+        groups:
+          $ref: '#/components/schemas/SettingsGroups'
+        
+    ##########################
+    SettingsGroups:
+    ##########################
+      type: array
+      items: 
+        $ref: '#/components/schemas/SettingsGroup'
+      example:
+        [
+          $ref: '#/components/schemas/SettingsGroup'
+        ]
+
+    SettingsGroup:
+      type: object
+      properties:
+        group_id: 
+          type: integer
+          minimum: 1
+          maximum: 16
+        assign: 
+          type: array
+          items: 
+            $ref: '#/components/schemas/SettingsAssign'
+        enable:
+          $ref: '#/components/schemas/Boolean'
+        name:
+          $ref: '#/components/schemas/String'
+        solo: 
+          $ref: '#/components/schemas/Boolean'
+        mute: 
+          $ref: '#/components/schemas/Boolean'
+      example:
+        group_id: 1
+        assign: [
+          {
+            assign_id: 1,
+            value: true
+          }
+        ]
+        enable: {
+          value: false
+        }
+        name: {
+          value: "bridged"
+        }
+        solo: {
+          value: false
+        }
+        mute: {
+          value: false
+        }
+
+    ##########################
+    SettingsInterface:
+    ##########################
+      type: object
+      properties:
+        sync:
+          $ref: '#/components/schemas/SettingsAudioSync'
+        output:
+          $ref: '#/components/schemas/SettingsOutputPreset'
+        madithrough:
+          $ref: '#/components/schemas/SettingsMadithrough'
+
+
+    ##########################
+    SettingsMadithrough:
+    ##########################
+      type: object
+      properties:
+        type:
+          type: integer
+      example:
+        type: 1
+
+    SettingsMadithroughOptions:
+      type: object
+      properties:
+        type: 
+          type: array
+          items:
+            type: object
+            properties:
+              value: 
+                type: integer
+              description:
+                type: string
+
+    ##########################
+    SettingsNetwork:
+    ##########################
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["dhcp", "static", "auto"]
+        ip: 
+          $ref: '#/components/schemas/NetworkIp'
+        ńetmask:
+          $ref: '#/components/schemas/NetworkMask'
+        gateway:
+          $ref: '#/components/schemas/NetworkIp'
+      example:
+        type: static
+        ip: 10.77.150.199
+        netmask: 255.255.0.0
+        gateway: 10.77.178.1
+
+    SettingsNetworkOptions:
+      type: object
+      properties:
+        type:
+          type: array
+          items:
+            type: string
+            enum: ["dhcp", "static", "auto-ip"]
+      example:
+        type: ["dhcp", "static", "auto-ip"]
+
+    ##########################
+    SettingsOutputPreset:
+    ##########################
+      type: object
+      properties:
+        presetnumber: 
+          type: integer
+      example:
+        presetnumber: 3
+
+    SettingsOutputOptions:
+      type: object
+      properties:
+        presets:
+          type: array
+          items:
+            type: object
+            properties:
+              presetnumber:
+                type: integer
+              name:
+                type: string
+        output:
+          type: array
+          items: 
+            type: string
+      example:
+        presets: [
+          {
+            presetnumber: 1,
+            name: OFF        
+          },
+          {
+            presetnumber: 2,
+            name: MADI FIBRE (Ch. 1 - 64)
+          }
+        ]
+        output: [
+          MADI FIBRE,
+          DANTE
+        ]
+
+    ##########################
+    SettingsPatch:
+    ##########################
+      type: object
+      properties:
+        patch_id:
+          type: integer
+          minimum: 1
+          maximum: 16
+        source_id:
+          description: depends on software options
+          type: integer
+        channel:
+          type: integer
+          minimum: 1
+          maximum: 2
+        gain:
+          type: number
+          minimum: -72.0
+          maximum: 24.0
+      example:
+        patch_id: 1
+        source_id: 1
+        channel: 2
+        gain : 2.5
+
+    SettingsPatches:
+      type: array
+      items: 
+        $ref: '#/components/schemas/SettingsPatch'
+
+    SettingsPatchOption:
+      type: object
+      properties:
+        source:
+          type: array
+          items: 
+            type: object
+            properties: 
+              source_id: 
+                type: integer
+              source_name:
+                type: string
+              max_channel:
+                type: integer
+        patch_id:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        gain:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        source: [
+          {
+            source_id: 1,
+            source_name: "madi coax",
+            max_channel: 64
+          }
+        ]
+        patch_id: [1, 16, 1, ""]
+        gain: [-100.0, 24.0, 0.1, "dBFS"]
+
+    ##########################
+    SettingsPowerlimiter:
+    ##########################
+      type: object
+      properties:
+        enable:
+          type: boolean
+        threshold: 
+          type: number
+          minimum: 0.1
+          maximum: 500.0
+        attack:
+          type: number
+          minimum: 500
+          maximum: 10000
+        release:
+          type: number
+          minimum: 500
+          maximum: 10000
+      example:
+        enable: true
+        threshold: 5.2
+        attack: 600.0
+        release: 1000.0
+
+    SettingsPowerlimiterOptions:
+      type: object
+      properties:
+        threshold:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        attack:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        release:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        threshold: [0.1, 100.0, 0.1, "W"]
+        attack: [1.000, 10000.000, 0.001, "ms"]
+        release: [1.000, 10000.000, 0.001, "ms"]
+
+    ##########################
+    SettingsRemotemute:
+    ##########################
+      type: object
+      properties:
+        enable:
+          type: boolean
+        ip:
+          $ref: '#/components/schemas/NetworkIp'
+      example:
+        enable: true
+        ip: 10.77.178.35
+ 
+    ##########################
+    SettingsSpeaker:
+    ##########################
+      type: object
+      properties:
+        enable:
+          type: boolean
+        threshold:
+          type: number
+          minimum: -100
+          maximum: 0
+        debounce:
+          type: integer
+          minimum: 0
+          maximum: 20
+        pilot_tone_volume:
+          type: number
+          minimum: -90
+          maximum: -20
+        pilot_tone_mute:
+          type: boolean
+      example:  
+        enable: true
+        threshold: 24.0
+        debounce: 1
+        pilot_tone_volume: -60.0
+        pilot_tone_mute: false
+
+    SettingsSpeakerOptions:
+      type: object
+      properties:
+        threshold:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        debounce:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        pilot_tone_volume:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        threshold: [-100.0, 0.0, 0.1, "dB"]
+        debounce": [0, 20, 1, "s"]
+        pilot_tone_volume": [-90.0, -20.0, 0.1, "dBFS"]
+
+    ##########################
+    SettingsSyslog:
+    ##########################
+      type: object
+      properties:
+        ip: 
+          $ref: '#/components/schemas/NetworkIp'
+        port:
+          type: integer
+      example:
+        ip: 10.77.178.22
+        port: 514
+
+    ##########################
+    SettingsTime:
+    ##########################
+      type: object
+      properties:
+        timezone:
+          $ref: '#/components/schemas/SettingsTimezone'  
+        current:
+          $ref: '#/components/schemas/SettingsTimeCurrent'
+          
+    SettingsTimezone:
+      type: object
+      properties:
+        value:
+          description: linux timezone like "UTC-2"
+          type: string
+    
+    SettingsTimeCurrent:
+      type: object
+      properties:
+        value:
+          description: timeformat "YYYY-MM-DDTHH:MM:SSZ"
+          type: string
+          format: date-time
+
+    ##########################
+    SettingsVoltagelimiter:
+    ##########################
+      type: object
+      properties:
+        voltagelimiter_id:
+          type: integer
+          minimum: 1
+          maximum: 2
+        enable:
+          type: boolean
+        threshold: 
+          type: number
+          minimum: 0.1
+          maximum: 50.0
+        attack:
+          type: number
+          minimum: 1
+          maximum: 10000
+        release:
+          type: number
+          minimum: 1
+          maximum: 10000
+      example:
+        voltagelimiter_id: 1
+        enable: true
+        threshold: 5.2
+        attack: 100.0
+        release: 200.0
+
+    SettingsVoltagelimiters:
+      type: array
+      items: 
+        $ref: '#/components/schemas/SettingsVoltagelimiter'
+
+    SettingsVoltagelimiterOptions:
+      type: object
+      properties:
+        voltagelimiter_id:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        threshold:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        attack:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        release:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        voltagelimiter_id: [1, 2, 1, ""]
+        threshold: [0.1, 48.0, 0.1, "Vp"]
+        attack: [1.000, 10000.000, 0.001, "ms"]
+        release: [1.000, 10000.000, 0.001, "ms"]
+
+    ##########################
+    SettingsVolumeramp:
+    ##########################
+      type: object
+      properties:
+        enable:
+          type: boolean
+        time:
+          type: number
+      example:
+        enable: false
+        time: 1.0
+
+    ##########################
+    Error:
+    ##########################
+      type: object
+      properties:
+        error:
+          description: Error Description
+          type: string
+        
+  ##########################
+  ##########################
+  # Status Schemas
+  ##########################
+  ##########################
+    ##########################
+    Status:
+    ##########################
+      type: object
+      properties:
+        channel:
+          $ref: '#/components/schemas/StatusChannels'
+        device:
+          $ref: '#/components/schemas/StatusDevice'
+        interface:
+          $ref: '#/components/schemas/StatusInterface'
+        save:
+          $ref: '#/components/schemas/StatusSave'
+        syslog:
+          $ref: '#/components/schemas/StatusSyslog'
+
+    ##########################
+    StatusAmp:
+    ##########################
+      type: object
+      properties:
+        value:
+          type: integer
+        value_string:
+          type: string
+        temperature:
+          type: number
+      example:
+        value: 1
+        value_string: "ok"
+        temperature: 20.0
+
+    StatusAmpOptions:
+      type: object
+      properties:
+        value:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        value_string:
+          type: array
+          items:
+            type: string
+            enum: ["OFF","OK","OTW","ERROR","SHUTDOWN","UNDEFINED"]
+        temperature:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+
+    ##########################
+    StatusChannel:
+    ##########################
+      type: object
+      properties: 
+        channel_id:
+          type: integer
+        active:
+          $ref: '#/components/schemas/Boolean'
+        amp:
+          $ref: '#/components/schemas/StatusAmp'
+        current:
+          $ref: '#/components/schemas/StatusCurrentPowerVoltageLevel'
+        error:
+          $ref: '#/components/schemas/StatusError'
+        level:
+          $ref: '#/components/schemas/StatusLevel'
+        power:
+          $ref: '#/components/schemas/StatusCurrentPowerVoltageLevel'
+        reduction:
+          $ref: '#/components/schemas/StatusReduction'
+        speaker:
+          $ref: '#/components/schemas/StatusSpeaker'
+        voltage:
+          $ref: '#/components/schemas/StatusCurrentPowerVoltageLevel'
+
+    StatusChannels:
+      type: array
+      items: 
+        $ref: '#/components/schemas/StatusChannel'
+    
+    ##########################
+    StatusCurrentPowerVoltageLevel:
+    ##########################
+      type: object
+      properties:    
+        level:
+          description: format [PEAK, HOLD]
+          type: array
+          items:
+            type: number
+      example:
+        level: [-63.5, -62.9]
+
+    StatusCurrentPowerVoltageLevelOptions:
+      type: object
+      properties:
+        level:
+          type: array
+          items: {}
+        scale:
+          type: number
+      example:
+        level: [-162.5, 24.0, 0.1, "dBFS"]
+        scale: "67.64"
+
+    ##########################
+    StatusDevice:
+    ##########################
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/StatusError'
+        fan:
+          $ref: '#/components/schemas/StatusFan'
+        fpga:
+          $ref: '#/components/schemas/StatusFPGA'
+        psu:
+          $ref: '#/components/schemas/StatusPSU'
+        remotemute:
+          $ref: '#/components/schemas/StatusRemotemute'
+    
+    ##########################
+    StatusError:
+    ##########################
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              errorcode:
+                type: integer
+              severity_level:
+                type: integer
+              severity:
+                type: string
+              message:
+                type: string
+              message_long:
+                type: string
+        severity_level:
+          type: integer
+        severity:
+          type: string
+      example:
+        errors: [
+          {
+            errorcode: 29,
+            severity_level: 4,
+            severity: "WARNING",
+            message: "Speaker no longer detected",
+            message_long: "Speaker no longer detected, check wiring"
+          }
+        ]
+        severity_level: 4
+        severity: "WARNING"
+
+    ##########################
+    StatusFan:
+    ##########################
+      type: object
+      properties:
+        speed:
+          type: array
+          items:
+            description: Fan speed in percent per fan
+            type: integer
+        error:
+          type: array
+          items:
+            description: fan error in difference to set fan speed
+            type: integer
+      example:
+          speed: [0, 0, 14, 0]
+          error: [0, 0,  0, 0]
+    
+    StatusFanOptions:
+      type: object
+      properties:
+        speed:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        fans:
+          description: maximum number fans in system
+          type: integer
+      example:
+        speed: [0, 100, 1, "%"]
+        fans: 4
+
+    ##########################
+    StatusFPGA:
+    ##########################
+      type: object
+      properties:
+        temperature:
+          description: temperature in °C
+          type: number
+        verification:
+          type: boolean
+      example:
+        temperature: 51.4
+        verification: true
+
+    ##########################
+    StatusInterface:
+    ##########################
+      type: object
+      properties:
+        internal:
+          $ref: '#/components/schemas/StatusInterfaceInternal'
+        interfaces:
+          $ref: '#/components/schemas/StatusInterfaceInterfaces'
+    
+    ##########################
+    StatusInterfaceInternal:
+    ##########################
+      type: object
+      properties:
+        name: 
+          type: string
+        status: 
+          type: string
+        samplingrate: 
+          type: string
+      example:
+        name: "DANTE"
+        status: "sync"
+        samplingrate: "48kHz"
+
+    ##########################
+    StatusInterfaceInterface:
+    ##########################
+      type: object
+      properties:
+        interface_id:
+          type: integer
+        name:
+          type: string
+        status:
+          type: string
+        samplingrate:
+          type: string
+      example:
+        interface_id: 2
+        name: "MADI COAX 2"
+        status: "unlock"
+        samplingrate: "0"
+        channel: 64    
+
+    StatusInterfaceInterfaces:
+      type: array
+      items: 
+        $ref: '#/components/schemas/StatusInterfaceInterface'
+
+    ##########################
+    StatusInterfaceInterfacesOptions:
+    ##########################
+      type: object
+      properties:
+        interface_id:
+          description: available interface ids
+          type: array
+          items:
+            type: integer
+
+    ##########################
+    StatusLevel:
+    ##########################
+      type: object
+      properties:
+        in:
+          description: format [PEAK, HOLD]
+          type: array
+          items:
+            type: number
+        post_filter:
+          description: format [PEAK, HOLD]
+          type: array
+          items:
+            type: number
+        out:
+          description: format [PEAK, HOLD]
+          type: array
+          items:
+            type: number
+      example:
+        in: [-162.5, -162.5 ]
+        post_filter: [-162.5,-162.5]
+        out: [-162.5,-162.5]
+    
+    StatusLevelOptions:
+      type: object
+      properties:
+        in:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        post_filter:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        out:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        in: [-162.5, 24.0, 0.1, "dBFS"]
+        post_filter: [-162.5, 24.0, 0.1, "dBFS"]
+        out: [-162.5, 24.0, 0.1, "dBFS"]
+
+    ##########################
+    StatusPSU:
+    ##########################
+      type: object
+      properties:
+        load: 
+          type: integer
+        reduction:
+          type: number
+        fan_speed:
+          type: integer
+        primary_voltage:
+          type: number
+        dc_ok:
+          type: array
+          items:
+            type: boolean
+      example:
+        load: 1
+        reduction: -0.0
+        fan_speed: 0
+        primary_voltage: 244.0
+        dc_ok": [true]
+      
+    StatusPSUOptions:
+      type: object
+      properties:
+        load: 
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        reduction:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        fan_speed:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        primary_voltage:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        number_psus:
+          type: integer
+      example:
+        load: [0, 100, 1, "%"]
+        reduction: [0.0, 50.0, 0.1, "dB"]
+        fan_speed: [0, 100, 1, "%"]
+        primary_voltage: [0, 270, 1, "V"]
+        number_psus: 1
+
+    ##########################
+    StatusReduction:
+    ##########################
+      type: object
+      properties:
+        currentlimiter:
+          type: number
+        powerlimiter:
+          type: number
+        voltagelimiter:
+          type: array
+          items:
+            type: number
+      example:
+        currentlimiter: 0.0
+        powerlimiter: 0.0
+        voltagelimiter: [
+          0.0,
+          0.0
+        ]
+
+    StatusReductionOptions:
+      type: object
+      properties:
+        voltagelimiter:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        powerlimiter:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        currentlimiter:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+
+    ##########################
+    StatusRemotemute:
+    ##########################
+      type: object
+      properties:
+        active: 
+          type: boolean
+        connected:
+          type: boolean
+      example:
+        active: false
+        connected: false
+
+    ##########################
+    StatusSave:
+    ##########################
+      type: object
+      properties:
+        nextsavetimeout:
+          description: next auto save in X sec
+          type: integer
+        saving:
+          description: Server saving
+          type: boolean
+      example:
+        nextsavetimeout": 1
+        saving: false
+
+    StatusSaveOptions:
+      type: object
+      properties:
+        nextsavetimeout:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        nextsavetimeout: [0, 10, 1, "s"]
+
+    ##########################
+    StatusSpeaker:
+    ##########################
+      type: object
+      properties:
+        detected:
+          type: boolean
+        level:
+          type: number
+    
+    StatusSpeakerOptions:
+      type: object
+      properties:
+        level:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        level: [
+          -100.0,
+          0.0,
+          0.1,
+          "dBFS"
+        ]
+    ##########################
+    StatusSyslog:
+    ##########################
+      type: object
+      properties:
+        lines:
+          description: number returned lines
+          type: integer
+        maxlines:
+          description: number of requested lines
+          type: integer
+        log:
+          type: array
+          items: 
+            type: string
+      example:
+        lines: 615
+        maxlines: 0
+        log: [
+          "<134>Jul 29 11:41:55 2021 left MAXX_SYSTEM[121]: Device: 01 - Power on with firmware: 3.5.5"
+        ]
+
+  ##########################
+  ##########################
+  # Preset Schemas
+  ##########################
+  ##########################
+
+    ##########################
+    PresetStorageOption:
+    ##########################
+      type: object
+
+      example:
+        presets: [
+          PLAIN,
+          STRAIGHT_DANTE
+        ]
+        presetname: 64
+
+
+  ########################################################
+  parameters:
+  ########################################################
+    ##########################
+    assign_id:
+    ##########################
+      description: Assign Index 1-n
+      explode: false
+      in: path
+      name: assign_id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 32
+      style: simple    
+    
+    ##########################
+    channel_id:
+    ##########################
+      description: Channel Index 1-n
+      explode: false
+      in: path
+      name: channel_id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 32
+      style: simple
+    ##########################
+    group_id:
+    ##########################
+      description: Group Index 1-n
+      explode: false
+      in: path
+      name: group_id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 16
+      style: simple
+    ##########################
+    eq_id:
+    ##########################
+      description: Equalizer Index 1-n
+      explode: false
+      in: path
+      name: eq_id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 32
+      style: simple
+
+    ##########################
+    patch_id:
+    ##########################
+      description: Patch Index 1-n
+      explode: false
+      in: path
+      name: patch_id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 16
+      style: simple
+
+    ##########################
+    preset_name:
+    ##########################
+      description: Preset name
+      explode: false
+      in: path
+      name: preset_name
+      required: true
+      schema:
+        type: string
+      style: simple
+
+    ##########################
+    voltagelimiter_id:
+    ##########################
+      description: Voltagelimiter Index 1-n
+      explode: false
+      in: path
+      name: voltagelimiter_id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 2
+      style: simple
+  
+  ########################################################
+  securitySchemes:
+  ########################################################
+    ApiKeyAuth:
+      type: apiKey
+      description: default api key used for all write operations
+      name: token
+      in: header
