@@ -995,7 +995,7 @@ paths:
    
   ########################################################
   /settings/channel/{channel_id}/speaker:
-  ########################################################    
+  ########################################################  
     get:
       tags:
         - settings/channel/{channel_id}/speaker
@@ -1011,7 +1011,6 @@ paths:
                 $ref: '#/components/schemas/SettingsSpeaker'
         '400':
           $ref: '#/components/responses/BadRequest400'
-
     put:
       tags:
         - settings/channel/{channel_id}/speaker
@@ -1034,10 +1033,13 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError401'
 
-    options:
+  ########################################################
+  /settings/channel/{channel_id}/speaker/preset:
+  ########################################################  
+    get:
       tags:
         - settings/channel/{channel_id}/speaker
-      summary: Get possible speaker settings parameter
+      summary: Get speaker preset of channel
       parameters:
         - $ref: '#/components/parameters/channel_id'
       responses:
@@ -1046,7 +1048,96 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SettingsSpeakerOptions'
+                $ref: '#/components/schemas/SettingsSpeakerPreset'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: Set speaker preset of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsSpeakerPreset'
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    delete:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: clear speaker preset from channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  ########################################################
+  /settings/channel/{channel_id}/speaker/detection:
+  ########################################################    
+    get:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: Get speaker detection settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsSpeakerDetection'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: Set speaker detection settings of channel
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsSpeakerDetection'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: Get possible speaker detection settings parameter
+      parameters:
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsSpeakerDetectionOptions'
         '400':
           $ref: '#/components/responses/BadRequest400'
    
@@ -2182,6 +2273,399 @@ paths:
           $ref: '#/components/responses/UnauthorizedError401'
 
   #######################################################
+  /settings/interface/interfaces:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get interfaces config
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsInterfaces'
+    put:
+      tags:
+        - settings/interface
+      summary: Set interfaces config
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsInterfaces'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/interface
+      summary: Get available interfaces
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsInterfacesOptions'
+
+  #######################################################
+  /settings/interface/interfaces/{interface_id}:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get interface config
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsInterfaceConfig'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/interface
+      summary: Set interface config
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsInterfaceConfig'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+  
+  #######################################################
+  /settings/interface/interfaces/{interface_id}/inputchannel:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get interface inputchannel config
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsInterfaceConfigInputChannels'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/interface
+      summary: Set interface inputchannel config
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsInterfaceConfigInputChannels'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/interface/interfaces/{interface_id}/inputchannel/{channel_id}:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get interface intputchannel config
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsInterfaceConfigInputChannel'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/interface
+      summary: Set interface intputchannel config
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsInterfaceConfigInputChannel'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/interface/interfaces/{interface_id}/inputchannel/{channel_id}/name:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get interface intputchannel name
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/String'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/interface
+      summary: Set interface intputchannel name
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/String'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/interface/interfaces/{interface_id}/outputchannel:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get interface outputchannel config
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsInterfaceConfigOutputChannels'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/interface
+      summary: Set interface outputchannel config
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsInterfaceConfigOutputChannels'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/interface/interfaces/{interface_id}/outputchannel/{channel_id}:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get interface outputchannel config
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsInterfaceConfigOutputChannel'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/interface
+      summary: Set interface outputchannel config
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsInterfaceConfigOutputChannel'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/interface/interfaces/{interface_id}/outputchannel/{channel_id}/name:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get interface outputchannel name
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/String'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/interface
+      summary: Set interface outputchannel name
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/String'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+  #######################################################
+  /settings/interface/interfaces/{interface_id}/outputchannel/{channel_id}/patch:
+  ########################################################    
+    get:
+      tags:
+        - settings/interface
+      summary: Get interface outputchannel patch
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsInterfaceConfigOutputChannelPatch'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - settings/interface
+      summary: Set interface outputchannel patch
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettingsInterfaceConfigOutputChannelPatch'
+      security:
+        - ApiKeyAuth: []
+       
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError401'
+
+    options:
+      tags:
+        - settings/interface
+      summary: Get available device audio sync interfaces
+      parameters:
+        - $ref: '#/components/parameters/interface_id'
+        - $ref: '#/components/parameters/channel_id'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettingsInterfaceConfigOutputChannelPatch'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+
+  #######################################################
   /settings/interface/sync:
   ########################################################    
     get:
@@ -2226,52 +2710,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SettingsAudioSyncOptions'
-
-  #######################################################
-  /settings/interface/output:
-  ########################################################    
-    get:
-      tags:
-        - settings/interface
-      summary: Get selected device audio output preset
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SettingsOutputPreset'
-    put:
-      tags:
-        - settings/interface
-      summary: Set device audio output preset
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SettingsOutputPreset'
-      security:
-        - ApiKeyAuth: []
-       
-      responses:
-        '200':
-          description: successful operation
-        '400':
-          $ref: '#/components/responses/BadRequest400'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError401'
-
-    options:
-      tags:
-        - settings/interface
-      summary: Get available output presets with description and available output interfaces
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SettingsOutputOptions'
 
   #######################################################
   /settings/interface/madithrough:
@@ -3044,6 +3482,105 @@ paths:
           $ref: '#/components/responses/BadRequest400'
         '403':
           $ref: '#/components/responses/Forbidden403'
+
+#######################################################
+#######################################################
+# SPEAKERPRESET CALLS
+#######################################################
+#######################################################
+  
+  ########################################################
+  /speakerpreset:
+  ########################################################    
+    get:
+      tags:
+        - speakerpreset
+      summary: Generate a speakerpreset from channel dsp (volume, phase, delay, eq, fir, limiter)
+      parameters:
+        - in: query
+          name: speakername
+          schema:
+            type: string
+        - in: query
+          name : manufacturer
+          schema:
+            type: string
+        - in: query
+          name : description
+          schema:
+            type: string
+        - in: query
+          name : version
+          schema:
+            type: string
+        - in: query
+          name : password
+          description: add a password to prevent loading it to channel dsp
+          schema:
+            type: string
+        - in: query
+          name : channel_id
+          description: channel_id of channel to generate the speakerpreset
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpeakerpresetValue'
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+    put:
+      tags:
+        - speakerpreset
+      summary: Get metadata from speakerpreset blob or load speakerpreset to channel dsp
+      parameters:
+        - in: query
+          name: getMetaData
+          description: send getMetaData true to get a JSON with metadata from preset blob
+          schema:
+            type: boolean
+        - in: query
+          name: channel_id
+          description: send a channel id if you want to load the preset data to channel dsp to edit it (maybe password is required)
+          schema:
+            type: integer
+        - in: query
+          name: password
+          description: password to unlock speakerpreset (if required) to load it to channel dsp
+          schema:
+            type: string
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpeakerpresetValue'
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          $ref: '#/components/responses/BadRequest400'
+        '403':
+          $ref: '#/components/responses/Forbidden403'
+    options:
+      tags:
+        - speakerpreset
+      summary: Get speakerpreset string field lengths
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpeakerpresetOptions'
+    
   
 ################################################################################################################
 components:
@@ -3168,7 +3705,7 @@ components:
     NetworkIp:
     ##########################
       type: string
-      example: 10.77.150.199
+      example: 10.77.150.51
     
     ##########################
     NetworkMask:
@@ -3249,6 +3786,8 @@ components:
           $ref: '#/components/schemas/SettingsChannels'
         device:
           $ref: '#/components/schemas/SettingsDevice'
+        interface:
+          $ref: '#/components/schemas/SettingsInterface'
 
 
     ##########################
@@ -3320,6 +3859,8 @@ components:
     ##########################
       type: object
       properties: 
+        channel_id:
+          type: integer
         name:
           $ref: '#/components/schemas/String'
         ampenable:
@@ -3703,16 +4244,123 @@ components:
         }
 
     ##########################
+    SettingsInterfacesOptions:
+    ##########################
+      type: array
+      items:
+        type: object
+        properties:
+          interface_id:
+            type: integer
+          name:
+            type: string
+          has_input:
+            type: boolean
+          input_channel:
+            type: integer
+          has_output:
+            type: boolean
+          output_channel:
+            type: integer
+
+    ##########################
     SettingsInterface:
     ##########################
       type: object
       properties:
+        interfaces:
+          $ref: '#/components/schemas/SettingsInterfaces'
         sync:
           $ref: '#/components/schemas/SettingsAudioSync'
-        output:
-          $ref: '#/components/schemas/SettingsOutputPreset'
         madithrough:
           $ref: '#/components/schemas/SettingsMadithrough'
+
+    SettingsInterfaces:
+      type: array
+      items: 
+        $ref: '#/components/schemas/SettingsInterfaceConfig'
+
+    ##########################
+    SettingsInterfaceConfig:
+    ##########################
+      type: object
+      properties:
+        interface_id:
+          type: integer
+        name:
+          type: string
+        inputchannel:
+          $ref: '#/components/schemas/SettingsInterfaceConfigInputChannels'
+        outputchannel:
+          $ref: '#/components/schemas/SettingsInterfaceConfigOutputChannels'
+
+    ##########################
+    SettingsInterfaceConfigInputChannel:
+    ##########################
+      type: object
+      properties:
+        channel_id:
+          type: integer
+        name:
+          $ref: '#/components/schemas/String'
+
+    SettingsInterfaceConfigInputChannels:
+      type: array
+      items: 
+        $ref: '#/components/schemas/SettingsInterfaceConfigInputChannel'
+
+    ##########################
+    SettingsInterfaceConfigOutputChannel:
+    ##########################
+      type: object
+      properties:
+        channel_id:
+          type: integer
+        name:
+          $ref: '#/components/schemas/String'
+        patch:
+          $ref: '#/components/schemas/SettingsInterfaceConfigOutputChannelPatch'
+
+
+    SettingsInterfaceConfigOutputChannels:
+      type: array
+      items: 
+        $ref: '#/components/schemas/SettingsInterfaceConfigOutputChannel'
+
+    ##########################
+    SettingsInterfaceConfigOutputChannelPatch:
+    ##########################
+      type: object
+      properties:
+        source_id:
+          type: integer
+        source_string:
+          type: string
+        channel:
+          type: integer
+
+    SettingsInterfaceConfigOutputChannelPatchOption:
+      type: object
+      properties:
+        source:
+          type: array
+          items: 
+            type: object
+            properties: 
+              source_id: 
+                type: integer
+              source_name:
+                type: string
+              max_channel:
+                type: integer
+      example:
+        source: [
+          {
+            source_id: 1,
+            source_name: "madi coax",
+            max_channel: 64
+          }
+        ]
 
 
     ##########################
@@ -3748,13 +4396,13 @@ components:
           enum: ["dhcp", "static", "auto"]
         ip: 
           $ref: '#/components/schemas/NetworkIp'
-        ńetmask:
+        netmask:
           $ref: '#/components/schemas/NetworkMask'
         gateway:
           $ref: '#/components/schemas/NetworkIp'
       example:
         type: static
-        ip: 10.77.150.199
+        ip: 10.77.150.51
         netmask: 255.255.0.0
         gateway: 10.77.178.1
 
@@ -3823,10 +4471,12 @@ components:
         source_id:
           description: depends on software options
           type: integer
+        source_string:
+          type: string
         channel:
           type: integer
           minimum: 1
-          maximum: 2
+          maximum: 64
         gain:
           type: number
           minimum: -72.0
@@ -3834,6 +4484,7 @@ components:
       example:
         patch_id: 1
         source_id: 1
+        source_string: "MADI FIBRE"
         channel: 2
         gain : 2.5
 
@@ -3938,6 +4589,25 @@ components:
     ##########################
       type: object
       properties:
+        detection:
+          $ref: '#/components/schemas/SettingsSpeakerDetection'
+        preset: 
+          $ref: '#/components/schemas/SettingsSpeakerPreset'
+
+    ##########################
+    SettingsSpeakerPreset:
+    ##########################
+      type: object
+      properties:
+        value:
+          description: speakerpreset blob as string
+          type: string
+
+    ##########################
+    SettingsSpeakerDetection:
+    ##########################
+      type: object
+      properties:
         enable:
           type: boolean
         threshold:
@@ -3961,7 +4631,7 @@ components:
         pilot_tone_volume: -60.0
         pilot_tone_mute: false
 
-    SettingsSpeakerOptions:
+    SettingsSpeakerDetectionOptions:
       type: object
       properties:
         threshold:
@@ -3978,8 +4648,8 @@ components:
           items: {}
       example:
         threshold: [-100.0, 0.0, 0.1, "dB"]
-        debounce": [0, 20, 1, "s"]
-        pilot_tone_volume": [-90.0, -20.0, 0.1, "dBFS"]
+        debounce: [0, 20, 1, "s"]
+        pilot_tone_volume: [-90.0, -20.0, 0.1, "dBFS"]
 
     ##########################
     SettingsSyslog:
@@ -4430,7 +5100,9 @@ components:
         fan_speed:
           type: integer
         primary_voltage:
-          type: number
+          type: array
+          items:
+            type: number
         dc_ok:
           type: array
           items:
@@ -4439,8 +5111,8 @@ components:
         load: 1
         reduction: -0.0
         fan_speed: 0
-        primary_voltage: 244.0
-        dc_ok": [true]
+        primary_voltage: [244.0, 232.0]
+        dc_ok": [true, false]
       
     StatusPSUOptions:
       type: object
@@ -4608,8 +5280,55 @@ components:
           STRAIGHT_DANTE
         ]
         presetname: 64
+  ##########################
+  ##########################
+  # Speakerpreset Schemas
+  ##########################
+  ##########################
+    ##########################
+    SpeakerPresetMetaData:
+    ##########################
+      type: object
+      properties:
+        speakername:
+          type: string
+        manufacturer: 
+          type: string
+        signed_from: 
+          type: string
+        description: 
+          type: string
+        version: 
+          type: string
+        date: 
+          type: string
+        has_pw: 
+          type: boolean
 
+    ##########################
+    SpeakerpresetOptions:
+    ##########################
+      type: object
+      properties:
+        speakername:
+          type: integer
+        manufacturer:
+          type: integer
+        description:
+          type: integer
+        password:
+          type: integer
+        version:
+          type: integer
 
+    ##########################
+    SpeakerpresetValue:
+    ##########################
+      type: object
+      properties:
+        value:
+          description: speakerpreset blob
+          type: string
   ########################################################
   parameters:
   ########################################################
@@ -4639,6 +5358,20 @@ components:
         type: integer
         minimum: 1
         maximum: 32
+      style: simple
+
+    ##########################
+    interface_id:
+    ##########################
+      description: Interface Index 1-n
+      explode: false
+      in: path
+      name: interface_id
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1
       style: simple
     ##########################
     group_id:
