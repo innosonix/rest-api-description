@@ -19,23 +19,23 @@ info:
 paths:
   ################################################################################################################
 
-  ########################################################
-  /version:
-    ########################################################
-    get:
-      tags:
-        - version
-      summary: get Rest-API Version
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  version:
-                    type: string
+  # ########################################################
+  # /version:
+  #   ########################################################
+  #   get:
+  #     tags:
+  #       - version
+  #     summary: get Rest-API Version
+  #     responses:
+  #       "200":
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 version:
+  #                   type: string
 
   ########################################################
   /info/device:
@@ -177,7 +177,7 @@ paths:
     ########################################################
     get:
       tags:
-        - settings/channel
+        - settings/channel/{channel_id}
       summary: Provides the complete channel object, including all sub objects like name / dsp / speaker / ...
       parameters:
         - $ref: "#/components/parameters/channel_id"
@@ -192,7 +192,7 @@ paths:
           $ref: "#/components/responses/BadRequest400"
     put:
       tags:
-        - settings/channel
+        - settings/channel/{channel_id}
       summary: Set channel setting
       parameters:
         - $ref: "#/components/parameters/channel_id"
@@ -212,6 +212,22 @@ paths:
           $ref: "#/components/responses/BadRequest400"
         "401":
           $ref: "#/components/responses/UnauthorizedError401"
+
+    options:
+      tags:
+        - settings/channel/{channel_id}
+      summary: Get channel options
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingChannelOptions"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
 
   ########################################################
   /settings/channel/{channel_id}/ampenable:
@@ -253,6 +269,299 @@ paths:
           $ref: "#/components/responses/BadRequest400"
         "401":
           $ref: "#/components/responses/UnauthorizedError401"
+
+  ########################################################
+  /settings/channel/{channel_id}/autostandby:
+    ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/autostandby
+      summary: Get autostandby settings of channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsChannelAutostandby"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/autostandby
+      summary: Set autostandby settings of channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsChannelAutostandby"
+      security:
+        - ApiKeyAuth: []
+
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError401"
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get value ranges of autostandby settings
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsChannelAutostandbyOptions"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /settings/channel/{channel_id}/audioanalyzer:
+    ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/audioanalyzer
+      summary: Get audioanalyzer settings for given channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsChannelAudioAnalyzer"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/audioanalyzer
+      summary: Set audioanalyzer settings for given channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsChannelAudioAnalyzer"
+      security:
+        - ApiKeyAuth: []
+
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError401"
+
+  ########################################################
+  /settings/channel/{channel_id}/audioanalyzer/enable:
+    ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/audioanalyzer
+      summary: Get enable of audioanalyzer of given channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Boolean"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/audioanalyzer
+      summary: Set enable of audioanalyzer of given channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Boolean"
+      security:
+        - ApiKeyAuth: []
+
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError401"
+
+  ########################################################
+  /settings/channel/{channel_id}/audioanalyzer/reference:
+    ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/audioanalyzer
+      summary: Get audioanalyzer references of given channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsChannelAudioAnalyzerReference"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/audioanalyzer
+      summary: Set audioanalyzer references of given channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsChannelAudioAnalyzerReference"
+      security:
+        - ApiKeyAuth: []
+
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError401"
+  ########################################################
+  /settings/channel/{channel_id}/audioanalyzer/reference/impedance:
+    ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/audioanalyzer
+      summary: Get audioanalyzer impedance reference of given channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayFloat"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/audioanalyzer
+      summary: Set audioanalyzer impedance reference of given channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArrayFloat"
+      security:
+        - ApiKeyAuth: []
+
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError401"
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get bin frequencies of reference points
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayFloat"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /settings/channel/{channel_id}/audioanalyzer/reference/phase:
+    ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/audioanalyzer
+      summary: Get audioanalyzer phase reference of given channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayFloat"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/audioanalyzer
+      summary: Set audioanalyzer phase reference of given channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArrayFloat"
+      security:
+        - ApiKeyAuth: []
+
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError401"
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/dsp
+      summary: Get frequencies of reference points
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayFloat"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
 
   ########################################################
   /settings/channel/{channel_id}/bridgeenable:
@@ -1053,6 +1362,63 @@ paths:
           $ref: "#/components/responses/BadRequest400"
 
   ########################################################
+  /settings/channel/{channel_id}/identify:
+    ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/identify
+      summary: Get identify parameter
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsChannelIdentify"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    put:
+      tags:
+        - settings/channel/{channel_id}/identify
+      summary: Set channel identify parameter
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsChannelIdentifyPut"
+      security:
+        - ApiKeyAuth: []
+
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError401"
+
+    options:
+      tags:
+        - settings/channel/{channel_id}/identify
+      summary: Get channel identifier parameter ranges
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingsChannelIdentifyOption"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
   /settings/channel/{channel_id}/name:
     ########################################################
     get:
@@ -1264,6 +1630,60 @@ paths:
       responses:
         "200":
           description: successful operation
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /settings/channel/{channel_id}/speaker/quantity:
+    ########################################################
+    get:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: Set number of parallel connected
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Integer"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+    put:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: Set number of parallel connected speakers
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Integer"
+      security:
+        - ApiKeyAuth: []
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError401"
+    options:
+      tags:
+        - settings/channel/{channel_id}/speaker
+      summary: Get possible quantity parameter
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IntegerOptions"
         "400":
           $ref: "#/components/responses/BadRequest400"
 
@@ -1802,7 +2222,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SettingsChannel"
+                $ref: "#/components/schemas/SettingsGroup"
         "400":
           $ref: "#/components/responses/BadRequest400"
 
@@ -2059,6 +2479,46 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Boolean"
+      security:
+        - ApiKeyAuth: []
+
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError401"
+
+  ########################################################
+  /settings/device/grouping/groups/{group_id}/volume:
+    ########################################################
+    get:
+      tags:
+        - settings/device/grouping
+      summary: Get group volume
+      parameters:
+        - $ref: "#/components/parameters/group_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Number"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+    put:
+      tags:
+        - settings/device/grouping
+      summary: Set group volume
+      parameters:
+        - $ref: "#/components/parameters/group_id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Number"
       security:
         - ApiKeyAuth: []
 
@@ -2546,7 +3006,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SettingsInterfacesOptions"
+                $ref: "#/components/schemas/InterfacesOptions"
 
   #######################################################
   /settings/interface/interfaces/{interface_id}:
@@ -2993,6 +3453,237 @@ paths:
 
   #######################################################
   #######################################################
+  # MULTICHANNEL
+  #######################################################
+  #######################################################
+
+  #######################################################
+  /settings/multichannel/ampenable:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get ampenable of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiBoolean"
+
+  #######################################################
+  /settings/multichannel/autostandby:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get autostandby of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiAutostandby"
+
+  #######################################################
+  /settings/multichannel/bridgeenable:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get bridgeenable of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiBoolean"
+
+  #######################################################
+  /settings/multichannel/dccouplingenable:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get dccouplingeenable of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiBoolean"
+
+  #######################################################
+  /settings/multichannel/name:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get names of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiString"
+
+  #######################################################
+  /settings/multichannel/speaker:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get speaker parameter of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiSpeaker"
+
+  #######################################################
+  /settings/multichannel/measurement:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get speaker measurement of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiNumber"
+
+  #######################################################
+  /settings/multichannel/dsp/currentlimiter:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get currentlimiter parameter of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiCurrentLimiter"
+
+  #######################################################
+  /settings/multichannel/dsp/delay:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get delay parameter of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiDelay"
+
+  #######################################################
+  /settings/multichannel/dsp/mute:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get mute of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiBoolean"
+
+  #######################################################
+  /settings/multichannel/dsp/patch:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get patches of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiPatch"
+
+  #######################################################
+  /settings/multichannel/dsp/powerlimiter:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get powerlimiter parameter of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiPowerLimiter"
+
+  #######################################################
+  /settings/multichannel/dsp/voltagelimiter:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get voltagelimiter parameter of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiVoltageLimiter"
+
+  #######################################################
+  /settings/multichannel/dsp/voltagereference:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get voltagereference of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiNumber"
+
+  #######################################################
+  /settings/multichannel/dsp/volume:
+    ########################################################
+    get:
+      tags:
+        - settings/multichannel
+      summary: Get volume of all channel
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiVolume"
+
+  #######################################################
+  #######################################################
   # STATUS CALLS
   #######################################################
   #######################################################
@@ -3088,11 +3779,246 @@ paths:
           $ref: "#/components/responses/BadRequest400"
 
   ########################################################
+  /status/channel/{channel_id}/audioanalyzer:
+    ########################################################
+    get:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Provides act audioanalyzer states
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusAudioanalyzer"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /status/channel/{channel_id}/audioanalyzer/voltage:
+    ########################################################
+    get:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Provides act voltage per spectrum and rms
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusAudioAnalyzerValue"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /status/channel/{channel_id}/audioanalyzer/voltage/rms:
+    ########################################################
+    get:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Provides act voltage rms in dB with scaling to V
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusAudioAnalyzerValueRMS"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /status/channel/{channel_id}/audioanalyzer/voltage/spectrum:
+    ########################################################
+    get:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Provides act voltage per spectrum (value per frequency)
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayFloat"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    options:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Get bin frequencies of voltage points
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayFloat"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /status/channel/{channel_id}/audioanalyzer/current:
+    ########################################################
+    get:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Provides act current per spectrum and rms
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusAudioAnalyzerValue"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /status/channel/{channel_id}/audioanalyzer/current/rms:
+    ########################################################
+    get:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Provides act current per rms in dB with scaling to A
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusAudioAnalyzerValueRMS"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /status/channel/{channel_id}/audioanalyzer/current/spectrum:
+    ########################################################
+    get:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Provides act current per spectrum (value per frequency)
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayFloat"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    options:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Get bin frequencies of current points
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayFloat"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /status/channel/{channel_id}/audioanalyzer/impedance:
+    ########################################################
+    get:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Provides measured impedance levels per spectrum with phase and validity
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusAudioanalyzerImpedance"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    options:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Get bin frequencies of impedance points
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayFloat"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /status/channel/{channel_id}/audioanalyzer/impedance_momentary:
+    ########################################################
+    get:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Provides act impedance levels per spectrum with phase and validity
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusAudioanalyzerImpedance"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+    options:
+      tags:
+        - status/channel/{channel_id}/audioanalyzer
+      summary: Get bin frequencies of impedance points
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayFloat"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
   /status/channel/{channel_id}/amp:
     ########################################################
     get:
       tags:
-        - status/channel
+        - status/channel/{channel_id}/amp
       summary: Provides act channel amp state
       parameters:
         - $ref: "#/components/parameters/channel_id"
@@ -3107,7 +4033,7 @@ paths:
           $ref: "#/components/responses/BadRequest400"
     options:
       tags:
-        - status/channel
+        - status/channel/{channel_id}/amp
       summary: Get max channel_id
       parameters:
         - $ref: "#/components/parameters/channel_id"
@@ -3118,6 +4044,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatusAmpOptions"
+        "400":
+          $ref: "#/components/responses/BadRequest400"
+
+  ########################################################
+  /status/channel/{channel_id}/autostandby:
+    ########################################################
+    get:
+      tags:
+        - status/channel/{channel_id}/autostandby
+      summary: Get autostandby status of channel
+      parameters:
+        - $ref: "#/components/parameters/channel_id"
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusAutostandby"
         "400":
           $ref: "#/components/responses/BadRequest400"
 
@@ -3160,7 +4105,7 @@ paths:
     ########################################################
     get:
       tags:
-        - status/channel
+        - status/channel/{channel_id}/dsp
       summary: Get channel delay
       parameters:
         - $ref: "#/components/parameters/channel_id"
@@ -3179,7 +4124,7 @@ paths:
     ########################################################
     get:
       tags:
-        - status/channel
+        - status/channel/{channel_id}/dsp
       summary: Get eq load in %
       parameters:
         - $ref: "#/components/parameters/channel_id"
@@ -3203,7 +4148,7 @@ paths:
     ########################################################
     get:
       tags:
-        - status/channel
+        - status/channel/{channel_id}/dsp
       summary: Get channel level
       parameters:
         - $ref: "#/components/parameters/channel_id"
@@ -3218,7 +4163,7 @@ paths:
           $ref: "#/components/responses/BadRequest400"
     options:
       tags:
-        - status/channel
+        - status/channel/{channel_id}/dsp
       summary: Get possible level values
       parameters:
         - $ref: "#/components/parameters/channel_id"
@@ -3237,7 +4182,7 @@ paths:
     ########################################################
     get:
       tags:
-        - status/channel
+        - status/channel/{channel_id}/dsp
       summary: Get channel reductions
       parameters:
         - $ref: "#/components/parameters/channel_id"
@@ -3252,7 +4197,7 @@ paths:
           $ref: "#/components/responses/BadRequest400"
     options:
       tags:
-        - status/channel
+        - status/channel/{channel_id}/dsp
       summary: Get possible reduction values
       parameters:
         - $ref: "#/components/parameters/channel_id"
@@ -3418,8 +4363,26 @@ paths:
               schema:
                 type: object
                 properties:
+                  configured:
+                    description: brooklyn is enabled in Software Options
+                    type: boolean
+                  available:
+                    description: first brooklyn communication successfull
+                    type: boolean
+                  rx_channel: 
+                    description: number rx channel read from brooklyn
+                    type: integer
+                  tx_channel: 
+                    description: number tx channel read from brooklyn
+                    type: integer
                   init:
-                    description: broolyn init status
+                    description: brooklyn init status
+                    type: boolean
+                  reboot:
+                    description: brooklyn reboots
+                    type: boolean
+                  error:
+                    description: brooklyn communication failed
                     type: boolean
 
   ########################################################
@@ -3573,7 +4536,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StatusInterfaceInterfacesOptions"
+                $ref: "#/components/schemas/InterfacesOptions"
 
   ########################################################
   /status/interface/interfaces/{interface_id}:
@@ -4026,6 +4989,14 @@ components:
         value: [0.1, 50.0, 0.1, "unit"]
 
     ##########################
+    ArrayFloat:
+      ##########################
+      type: array
+      items:
+        type: number
+      example: [1.22, 0.12]
+
+    ##########################
     Integer:
       ##########################
       type: object
@@ -4086,7 +5057,7 @@ components:
           type: array
           items:
             type: string
-            enum: [IF1, IF2, IF3, D1, D2, M1]
+            enum: [IF1, IF2, IF3, D1, D2, D3, M1]
         psu_fan:
           type: boolean
         housing_fan:
@@ -4133,6 +5104,15 @@ components:
       ##########################
       type: object
       properties:
+        format: 
+          description: protocol format
+          type: string
+        version:
+          description: protocol version
+          type: integer
+        opt:
+          description: actual software options set in device
+          type: integer
         channel:
           $ref: "#/components/schemas/SettingsChannels"
         device:
@@ -4201,12 +5181,19 @@ components:
       ##########################
       type: object
       properties:
+        version:
+          description: protocol version
+          type: integer
         channel_id:
           type: integer
         name:
           $ref: "#/components/schemas/String"
+        autostandby:
+          $ref: "#/components/schemas/SettingsChannelAutostandby"
         ampenable:
           $ref: "#/components/schemas/Boolean"
+        audioanalyzer:
+          $ref: "#/components/schemas/SettingsChannelAudioAnalyzer"
         bridgeenable:
           $ref: "#/components/schemas/Boolean"
         dsp:
@@ -4218,6 +5205,69 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/SettingsChannel"
+
+    SettingChannelOptions:
+      type: object
+      properties:
+        channel:
+          type: number
+        amplifier:
+          type: boolean
+        dsp:
+          type: boolean
+        fir:
+          type: boolean
+        speaker_detection:
+          type: boolean
+
+    ##########################
+    SettingsChannelAutostandby:
+      ##########################
+      type: object
+      properties:
+        enable:
+          type: boolean
+        threshold:
+          type: number
+        timeout:
+          type: number
+
+    ##########################
+    SettingsChannelAutostandbyOptions:
+      ##########################
+      type: object
+      properties:
+        threshold:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        timeout:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+      example:
+        threshold: [0.1, 50.0, 0.1, "dBFs"]
+        timeout: [60, 10000, 0.1, "s"]
+
+    ##########################
+    SettingsChannelAudioAnalyzer:
+      ##########################
+      type: object
+      properties:
+        enable:
+          $ref: "#/components/schemas/Boolean"
+        reference:
+          $ref: "#/components/schemas/SettingsChannelAudioAnalyzerReference"
+
+    ##########################
+    SettingsChannelAudioAnalyzerReference:
+      ##########################
+      type: object
+      properties:
+        magitude:
+          $ref: "#/components/schemas/ArrayFloat"
+        phase:
+          $ref: "#/components/schemas/ArrayFloat"
 
     ##########################
     SettingsChannelDsp:
@@ -4247,6 +5297,77 @@ components:
         volume:
           $ref: "#/components/schemas/Number"
 
+    ##########################
+    SettingsChannelIdentify:
+      ##########################
+      type: object
+      properties:
+        channel:
+          description: last activated channel
+          type: number
+        source:
+          description: identify testtone source id
+          type: number
+        source_string:
+          description: source name
+          type: string
+        gain:
+          description: identify testtone gain
+          type: number
+        active:
+          description: identify active flag
+          type: boolean
+      example:
+        channel: 1
+        source: 15
+        source_string: "WHITE NOISE"
+        gain: -30.0
+        active: false
+
+    SettingsChannelIdentifyPut:
+      type: object
+      properties:
+        channel:
+          description: last activated channel
+          type: number
+        source:
+          description: identify testtone source id
+          type: number
+        gain:
+          description: identify testtone gain
+          type: number
+        active:
+          description: identify active flag
+          type: boolean
+      example:
+        channel: 1
+        source: 15
+        gain: -30.0
+        active: false
+
+    SettingsChannelIdentifyOption:
+      type: object
+      properties:
+        channel:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        gain:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        source:
+          description: array of possible sources
+          type: array
+          items: {}
+      example:
+        channel: [1, 32, 1, ""]
+        gain: [-72.0, 24.0, 0.1, "dB"]
+        source:
+          [
+            { source_id: 7, source_name: "SINUS 100Hz" },
+            { source_id: 8, source_name: "SINUS 200Hz" },
+          ]
     ##########################
     SettingsCurrentlimiter:
       ##########################
@@ -4288,10 +5409,25 @@ components:
           type: number
           minimum: -100.0
           maximum: 100.0
+        m:
+          type: number
+          minimum: -330
+          maximum: 330
+        ms:
+          type: number
+          minimum: -1000
+          maximum: 1000
+        samples:
+          type: number
+          minimum: -48000
+          maximum: 48000
       example:
         type: "m"
         value: 200.0
         temperature: 21.5
+        m: 100
+        ms: 10
+        samples: 100
 
     SettingsDelayOptions:
       type: object
@@ -4303,7 +5439,7 @@ components:
         value:
           type: object
           properties:
-            sample:
+            samples:
               description: format [MIN, MAX, STEP, UNIT]
               type: array
               items: {}
@@ -4319,13 +5455,28 @@ components:
           description: format [MIN, MAX, STEP, UNIT]
           type: array
           items: {}
+        samples:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        ms:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
+        m:
+          description: format [MIN, MAX, STEP, UNIT]
+          type: array
+          items: {}
       example:
         temperature: [-100.0, 100.0, 0.1, "°C"]
-        type: ["sample", "ms", "m"]
+        type: ["samples", "ms", "m"]
         value:
-          sample: [0.0, 48000.0, 1.0, "sample"]
+          samples: [0.0, 48000.0, 1.0, "sample"]
           ms: [0.0, 1000.0, 0.1, "ms"]
           m: [0.0, 330.0, 0.1, "m"]
+        samples: [-48000.0, 48000.0, 1.0, "sample"]
+        ms: [-1000.0, 1000.0, 0.1, "ms"]
+        m: [-330.0, 330.0, 0.1, "m"]
 
     ##########################
     SettingsDevice:
@@ -4583,8 +5734,6 @@ components:
     ##########################
     SettingsFan:
       ##########################
-      ##########################
-      ##########################
       type: object
       properties:
         mode:
@@ -4659,7 +5808,6 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/SettingsGroup"
-      example: [$ref: "#/components/schemas/SettingsGroup"]
 
     SettingsGroup:
       type: object
@@ -4680,6 +5828,8 @@ components:
           $ref: "#/components/schemas/Boolean"
         mute:
           $ref: "#/components/schemas/Boolean"
+        volume:
+          $ref: "#/components/schemas/Number"
       example:
         group_id: 1
         assign: [{ assign_id: 1, value: true }]
@@ -4687,9 +5837,10 @@ components:
         name: { value: "bridged" }
         solo: { value: false }
         mute: { value: false }
+        volume: { value: 0.0 }
 
     ##########################
-    SettingsInterfacesOptions:
+    InterfacesOptions:
       ##########################
       type: array
       items:
@@ -4938,13 +6089,25 @@ components:
           maximum: 24.0
         mute:
           type: boolean
+        channel_name:
+          description: channel name for stream sources
+          type: string
+        device_name:
+          description: device name for stream sources
+          type: string
+        label:
+          description: label name for stream sources
+          type: string
       example:
         patch_id: 1
-        source_id: 1
-        source_string: "MADI FIBRE"
+        source_id: 23
+        source_string: "DANTE STREAM"
         channel: 2
         gain: 2.5
         mute: false
+        channel_name: "62"
+        device_name: "AMP5"
+        label: "Audioserver 2 R"
 
     SettingsPatches:
       type: array
@@ -4973,10 +6136,19 @@ components:
           description: format [MIN, MAX, STEP, UNIT]
           type: array
           items: {}
+        channel_name:
+          description: max channel name string length (for stream sources)
+        device_name:
+          description: max device name string length (for stream sources)
+        label:
+          description: max label string length (for stream sources)
       example:
         source: [{ source_id: 1, source_name: "madi coax", max_channel: 64 }]
         patch_id: [1, 16, 1, ""]
         gain: [-100.0, 24.0, 0.1, "dBFS"]
+        channel_name: 128
+        device_name: 128
+        label: 29
 
     ##########################
     SettingsPowerlimiter:
@@ -5155,7 +6327,7 @@ components:
         threshold:
           type: number
           minimum: 0.1
-          maximum: 50.0
+          maximum: 100.0
         attack:
           type: number
           minimum: 1
@@ -5164,10 +6336,12 @@ components:
           type: number
           minimum: 1
           maximum: 10000
+        used_by_speakerpreset:
+          type: boolean
         lookaheaddelay:
           description: only for voltagelimiter 1
           type: number
-          minimum: 1
+          minimum: 0
           maximum: 1000
       example:
         voltagelimiter_id: 1
@@ -5175,6 +6349,7 @@ components:
         threshold: 5.2
         attack: 100.0
         release: 200.0
+        used_by_speakerpreset: false
         lookaheaddelay: 100.0
 
     SettingsVoltagelimiters:
@@ -5236,6 +6411,144 @@ components:
 
     ##########################
     ##########################
+    # Multi Schemas
+    ##########################
+    ##########################
+
+    ##########################
+    MultiBoolean:
+      ##########################
+      type: array
+      items:
+        type: object
+        properties:
+          value:
+            type: boolean
+
+    ##########################
+    MultiNumber:
+      ##########################
+      type: array
+      items:
+        type: object
+        properties:
+          value:
+            type: number
+    ##########################
+    MultiVolume:
+      ##########################
+      type: array
+      items:
+        type: object
+        properties:
+          value:
+            description: channel volume
+            type: number
+          group:
+            description: group offset volume
+            type: number
+    ##########################
+    MultiString:
+      ##########################
+      type: array
+      items:
+        type: object
+        properties:
+          value:
+            type: string
+
+    ##########################
+    MultiAutostandby:
+      ##########################
+      type: array
+      items:
+        $ref: "#/components/schemas/SettingsChannelAutostandby"
+
+    ##########################
+    MultiSpeaker:
+      ##########################
+      type: array
+      items:
+        type: object
+        properties:
+          detection:
+            $ref: "#/components/schemas/SettingsSpeakerDetection"
+          preset:
+            type: object
+            properties:
+              speakername:
+                type: string
+              manufacturer:
+                type: string
+              signed_from:
+                type: string
+              description:
+                type: string
+              version:
+                type: string
+              date:
+                type: string
+              has_pw:
+                type: boolean
+          quantity:
+            type: object
+            properties:
+              value:
+                type: integer
+
+    ##########################
+    MultiCurrentLimiter:
+      ##########################
+      type: array
+      items:
+        $ref: "#/components/schemas/SettingsCurrentlimiter"
+
+    ##########################
+    MultiDelay:
+      ##########################
+      type: array
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+          value:
+            type: number
+          temperature:
+            type: number
+          delay_sample:
+            description: delay in samples of given delay values
+            type: number
+          delay_ms:
+            description: delay in ms of given delay values
+            type: number
+          delay_m:
+            description: delay in m of given delay values
+            type: number
+
+    ##########################
+    MultiPatch:
+      ##########################
+      type: array
+      items:
+        $ref: "#/components/schemas/SettingsPatches"
+
+    ##########################
+    MultiPowerLimiter:
+      ##########################
+      type: array
+      items:
+        $ref: "#/components/schemas/SettingsPowerlimiter"
+
+    ##########################
+    MultiVoltageLimiter:
+      ##########################
+      type: array
+      items:
+        $ref: "#/components/schemas/SettingsVoltagelimiters"
+
+    ##########################
+    ##########################
     # Status Schemas
     ##########################
     ##########################
@@ -5286,10 +6599,11 @@ components:
               [
                 "OFF",
                 "OK",
-                "OTW",
+                "OVERTEMP",
                 "WARNING",
                 "ERROR",
                 "SHUTDOWN",
+                "REINIT",
                 "UNDEFINED",
                 "N/A",
               ]
@@ -5309,6 +6623,10 @@ components:
           $ref: "#/components/schemas/Boolean"
         amp:
           $ref: "#/components/schemas/StatusAmp"
+        audioanalyzer:
+          $ref: "#/components/schemas/StatusAudioanalyzer"
+        autostandby:
+          $ref: "#/components/schemas/StatusAutostandby"
         current:
           $ref: "#/components/schemas/StatusCurrentPowerVoltageLevel"
         error:
@@ -5328,6 +6646,62 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/StatusChannel"
+
+    ##########################
+    StatusAudioanalyzer:
+      ##########################
+      type: object
+      properties:
+        current:
+          $ref: "#/components/schemas/StatusAudioAnalyzerValue"
+        voltage:
+          $ref: "#/components/schemas/StatusAudioAnalyzerValue"
+        impedance:
+          $ref: "#/components/schemas/StatusAudioanalyzerImpedance"
+        impedance_momentary:
+          $ref: "#/components/schemas/StatusAudioanalyzerImpedance"
+
+    ##########################
+    StatusAudioAnalyzerValue:
+      ##########################
+      type: object
+      properties:
+        spectrum:
+          $ref: "#/components/schemas/ArrayFloat"
+        rms:
+          $ref: "#/components/schemas/StatusAudioAnalyzerValueRMS"
+
+    ##########################
+    StatusAudioAnalyzerValueRMS:
+      ##########################
+      type: object
+      properties:
+        value:
+          type: number
+        scale:
+          type: number
+
+    ##########################
+    StatusAudioanalyzerImpedance:
+      ##########################
+      type: object
+      properties:
+        spectrum:
+          $ref: "#/components/schemas/ArrayFloat"
+        phase:
+          $ref: "#/components/schemas/ArrayFloat"
+        valid:
+          $ref: "#/components/schemas/ArrayFloat"
+
+    ##########################
+    StatusAutostandby:
+      ##########################
+      type: object
+      properties:
+        active:
+          type: boolean
+        timeout:
+          type: number
 
     ##########################
     StatusCurrentPowerVoltageLevel:
@@ -5528,17 +6902,6 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/StatusInterfaceInterfaceIntputchannel"
-
-    ##########################
-    StatusInterfaceInterfacesOptions:
-      ##########################
-      type: object
-      properties:
-        interface_id:
-          description: available interface ids
-          type: array
-          items:
-            type: integer
 
     ##########################
     StatusDelay:
@@ -5885,7 +7248,7 @@ components:
       schema:
         type: integer
         minimum: 1
-        maximum: 1
+        maximum: 6
       style: simple
     ##########################
     group_id:
